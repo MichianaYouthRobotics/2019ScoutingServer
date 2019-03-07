@@ -23,6 +23,8 @@ class Robot(models.Model):
     team_name = models.CharField(max_length=100)
     location = models.CharField(max_length=100, default='')
     photo = models.ImageField(blank=True, null=True)
+    favorite = models.BooleanField(default=False)
+
 
     @property
     def robot_pk(self):

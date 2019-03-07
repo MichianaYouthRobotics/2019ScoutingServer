@@ -7,7 +7,7 @@ class RobotSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Robot
-        fields = ('robot_pk', 'robot_number', 'team_name', 'photo', 'location')
+        fields = ('robot_pk', 'robot_number', 'team_name', 'photo', 'location', 'favorite')
 
 
 class PitScoutSerializer(serializers.ModelSerializer):
@@ -37,7 +37,8 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class CoachScoutSerializer(serializers.ModelSerializer):
+    robot = RobotSerializer()
 
     class Meta:
         model = CoachScout
-        fields = ('id', 'robot', 'event', 'match', 'synergy', 'notes', 'scouter')
+        fields = ('id', 'robot', 'event', 'match_number', 'synergy', 'notes', 'scouter')
