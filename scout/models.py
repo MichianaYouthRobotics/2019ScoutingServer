@@ -15,12 +15,12 @@ class Event(models.Model):
     week_number = models.IntegerField(default=1)
     start_date = models.DateField()
     end_date = models.DateField()
-    robots = models.ManyToManyField('Robot', blank=True, null=True)
+    robots = models.ManyToManyField('Robot', blank=True)
 
 
 class Robot(models.Model):
     robot_number = models.IntegerField(default=0)
-    team_name = models.CharField(max_length=100)
+    team_name = models.CharField(max_length=100,blank=True, null=True)
     location = models.CharField(max_length=100, default='')
     photo = models.ImageField(blank=True, null=True)
     favorite = models.BooleanField(default=False)

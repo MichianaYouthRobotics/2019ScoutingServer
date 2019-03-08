@@ -7,7 +7,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 
 from .models import Robot, PitScout, MatchScout, Event, CoachScout
-from .serializers import RobotSerializer, PitScoutSerializer, MatchSerializer, EventSerializer, CoachScoutSerializer
+from .serializers import RobotSerializer, PitScoutSerializer, MatchScoutSerializer, EventSerializer, CoachScoutSerializer
 
 
 class RobotList(generics.ListAPIView):
@@ -24,16 +24,15 @@ class PitScouts(generics.ListAPIView):
 
     def get_queryset(self):
         event = self.kwargs['event']
-        return PitScout.objects.filter()
+        return PitScout.objects.filter(event__id=event)
 
 
 class MatchScouts(generics.ListAPIView):
-    queryset = Robot.objects.all()
-    serializer_class = RobotSerializer
+    serializer_class = MatchScoutSerializer
 
     def get_queryset(self):
         event = self.kwargs['event']
-        return MatchScout.objects.filter()
+        return MatchScout.objects.filter(event__id=event)
 
 
 class CoachScouts(generics.ListAPIView):
@@ -41,7 +40,7 @@ class CoachScouts(generics.ListAPIView):
 
     def get_queryset(self):
         event = self.kwargs['event']
-        return CoachScout.objects.filter()
+        return CoachScout.objects.filter(event__id=event)
 
 
 @csrf_exempt

@@ -20,7 +20,7 @@ class PitScoutSerializer(serializers.ModelSerializer):
                   'ground_pickup_hatch', 'favorite_feature', 'notes', 'rating', 'do_not_pick', 'scouter')
 
 
-class MatchSerializer(serializers.ModelSerializer):
+class MatchScoutSerializer(serializers.ModelSerializer):
     robot = RobotSerializer(many=False)
 
     class Meta:
