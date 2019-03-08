@@ -15,9 +15,9 @@ class PitScoutSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PitScout
-        fields = ('pit_scout_pk', 'robot', 'snow_days', 'starts_on_hab_2', 'cargo_in_sandstorm', 'cargo_in_teleop',
-                  'hatches_in_teleop', 'climb_level', 'max_rocket_height', 'ground_pickup_cargo', 'ground_pickup_hatch',
-                  'favorite_feature', 'notes', 'rating', 'do_not_pick', 'scouter')
+        fields = ('pit_scout_pk', 'robot', 'snow_days', 'starts_on_hab_2', 'cargo_in_sandstorm', 'hatches_in_sandstorm',
+                  'cargo_in_teleop', 'hatches_in_teleop', 'climb_level', 'max_rocket_height', 'ground_pickup_cargo',
+                  'ground_pickup_hatch', 'favorite_feature', 'notes', 'rating', 'do_not_pick', 'scouter')
 
 
 class MatchSerializer(serializers.ModelSerializer):
