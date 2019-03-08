@@ -41,6 +41,7 @@ class PitScout(models.Model):
         ('a', 'Autonomous'),
         ('b', 'Both'),
     )
+    unique_scout_key = models.CharField(max_length=64, blank=True, null=True)
     robot = models.ForeignKey(Robot, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     snow_days = models.IntegerField(default=0)
@@ -74,6 +75,7 @@ class MatchScout(models.Model):
         ('1', 'Hab Level 1'),
         ('2', 'Hab Level 2'),
     )
+    unique_scout_key = models.CharField(max_length=64, blank=True, null=True)
     scouter = models.CharField(max_length=45)
     robot = models.ForeignKey(Robot, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
@@ -110,6 +112,7 @@ class MatchScout(models.Model):
 
 
 class CoachScout(models.Model):
+    unique_scout_key = models.CharField(max_length=64, blank=True, null=True)
     robot = models.ForeignKey(Robot, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     match_number = models.IntegerField(default=0)
