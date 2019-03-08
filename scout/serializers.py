@@ -17,7 +17,8 @@ class PitScoutSerializer(serializers.ModelSerializer):
         model = PitScout
         fields = ('pit_scout_pk', 'robot', 'snow_days', 'starts_on_hab_2', 'cargo_in_sandstorm', 'hatches_in_sandstorm',
                   'cargo_in_teleop', 'hatches_in_teleop', 'climb_level', 'max_rocket_height', 'ground_pickup_cargo',
-                  'ground_pickup_hatch', 'favorite_feature', 'notes', 'rating', 'do_not_pick', 'scouter', 'unique_scout_key')
+                  'ground_pickup_hatch', 'favorite_feature', 'notes', 'rating', 'do_not_pick', 'scouter',
+                  'unique_scout_key', 'buddy_climb')
 
 
 class MatchScoutSerializer(serializers.ModelSerializer):
@@ -27,7 +28,7 @@ class MatchScoutSerializer(serializers.ModelSerializer):
         model = MatchScout
         fields = ('match_pk', 'scouter', 'robot', 'alliance', 'match_number', 'event_date', 'in_match_actions',
                   'hatch_count', 'cargo_count', 'speed', 'hab_level', 'start_position', 'strategy', 'team_work',
-                  'in_match_actions', 'notes', 'unique_scout_key')
+                  'in_match_actions', 'notes', 'unique_scout_key', 'recommend')
 
 
 class EventSerializer(serializers.ModelSerializer):

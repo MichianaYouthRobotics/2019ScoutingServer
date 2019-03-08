@@ -59,6 +59,7 @@ class PitScout(models.Model):
     rating = models.IntegerField(default=0)
     do_not_pick = models.BooleanField(default=False)
     scouter = models.CharField(max_length=255, blank=True, null=True)
+    buddy_climb = models.BooleanField(default=False)
 
     @property
     def pit_scout_pk(self):
@@ -75,6 +76,14 @@ class MatchScout(models.Model):
         ('1', 'Hab Level 1'),
         ('2', 'Hab Level 2'),
     )
+
+    LEVEL_CHOICES = (
+        ('0', 'None'),
+        ('1', 'Hab Level 1'),
+        ('2', 'Hab Level 2'),
+        ('3', 'Hab Level 3'),
+    )
+
     unique_scout_key = models.CharField(max_length=64, blank=True, null=True)
     scouter = models.CharField(max_length=45)
     robot = models.ForeignKey(Robot, on_delete=models.CASCADE)
@@ -83,13 +92,6 @@ class MatchScout(models.Model):
     match_number = models.IntegerField()
     event_date = models.DateTimeField(auto_now=True)
     start_position = models.CharField(max_length=1, choices=START_POSITION_CHOICES, default='1')
-    LEVEL_CHOICES = (
-        ('0', 'None'),
-        ('1', 'Hab Level 1'),
-        ('2', 'Hab Level 2'),
-        ('3', 'Hab Level 3'),
-    )
-
     hab_level = models.CharField(max_length=1, choices=LEVEL_CHOICES, default='0')
     speed = models.IntegerField(default=0)
     strategy = models.IntegerField(default=0)
