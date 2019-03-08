@@ -25,8 +25,9 @@ class MatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MatchScout
-        fields = ('match_pk', 'scouter', 'robot', 'match_number', 'event_date', 'in_match_actions', 'hatch_count',
-                  'cargo_count', 'speed', 'hab_level')
+        fields = ('match_pk', 'scouter', 'robot', 'alliance', 'match_number', 'event_date', 'in_match_actions',
+                  'hatch_count', 'cargo_count', 'speed', 'hab_level', 'start_position', 'strategy', 'team_work',
+                  'in_match_actions', 'notes')
 
 
 class EventSerializer(serializers.ModelSerializer):
