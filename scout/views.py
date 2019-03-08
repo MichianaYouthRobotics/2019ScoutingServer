@@ -88,8 +88,8 @@ def sync_pit_scouts(request, event_id):
         try:
             event = Event.objects.get(id=event_id, event_key=key)
             unique_scout_key = body.get('unique_scout_key')
-            robot_pk = body.get('robot_pk')
-            robot = Robot.objects.get(robot_pk=robot_pk)
+            robot_number = body.get('robot').get('robot_number')
+            robot = Robot.objects.get(robot_number=robot_number)
             snow_days = body.get('snow_days')
             starts_on_hab_2 = body.get('starts_on_hab_2')
             cargo_in_sandstorm = body.get('cargo_in_sandstorm')
@@ -106,15 +106,16 @@ def sync_pit_scouts(request, event_id):
             do_not_pick = body.get('do_not_pick')
             scouter = body.get('scouter')
             buddy_climb = body.get('buddy_climb')
-            new_pit_scout = PitScout.objects.create(
-                event=event, unique_scout_key=unique_scout_key, snow_days=snow_days, starts_on_hab_2=starts_on_hab_2,
-                robot=robot, cargo_in_sandstorm=cargo_in_sandstorm, hatches_in_sandstorm=hatches_in_sandstorm,
-                cargo_in_teleop=cargo_in_teleop, hatches_in_teleop=hatches_in_teleop, climb_level=climb_level,
-                max_rocket_height=max_rocket_height, ground_pickup_cargo=ground_pickup_cargo,
-                ground_pickup_hatch=ground_pickup_hatch, favorite_feature=favorite_feature, notes=notes, rating=rating,
-                do_not_pick=do_not_pick, scouter=scouter, buddy_climb=buddy_climb,
-            )
-            new_pit_scout.save()
+            if PitScout.objects.filter(unique_scout_key=unique_scout_key).count() < 1:
+                new_pit_scout = PitScout.objects.create(
+                    event=event, unique_scout_key=unique_scout_key, snow_days=snow_days, starts_on_hab_2=starts_on_hab_2,
+                    robot=robot, cargo_in_sandstorm=cargo_in_sandstorm, hatches_in_sandstorm=hatches_in_sandstorm,
+                    cargo_in_teleop=cargo_in_teleop, hatches_in_teleop=hatches_in_teleop, climb_level=climb_level,
+                    max_rocket_height=max_rocket_height, ground_pickup_cargo=ground_pickup_cargo,
+                    ground_pickup_hatch=ground_pickup_hatch, favorite_feature=favorite_feature, notes=notes, rating=rating,
+                    do_not_pick=do_not_pick, scouter=scouter, buddy_climb=buddy_climb,
+                )
+                new_pit_scout.save()
             return JsonResponse({'status': 'OK'})
         except Event.DoesNotExist:
             return JsonResponse({'error': 'bad EVENT ID or KEY'})
@@ -131,8 +132,8 @@ def sync_match_scouts(request, event_id):
 
             unique_scout_key = body.get('unique_scout_key')
             scouter = body.get('scouter')
-            robot_pk = body.get('robot_pk')
-            robot = Robot.objects.get(robot_pk=robot_pk)
+            robot_number = body.get('robot').get('robot_number')
+            robot = Robot.objects.get(robot_number=robot_number)
 
             alliance = body.get('alliance')
             match_number = body.get('match_number')
@@ -146,15 +147,15 @@ def sync_match_scouts(request, event_id):
             in_match_actions = body.get('in_match_actions')
             hatch_count = body.get('hatch_count')
             cargo_count = body.get('cargo_count')
+            if MatchScout.objects.filter(unique_scout_key=unique_scout_key).count() < 1:
+                new_match_scout = MatchScout.objects.create(
+                    robot=robot, event=event, unique_scout_key=unique_scout_key, scouter=scouter, alliance=alliance,
+                    match_number=match_number, start_position=start_position, hab_level=hab_level, speed=speed,
+                    strategy=strategy, team_work=team_work, recommend=recommend, notes=notes, in_match_actions=in_match_actions,
+                    hatch_count=hatch_count, cargo_count=cargo_count
+                )
 
-            new_match_scout = MatchScout.objects.create(
-                robot=robot, event=event, unique_scout_key=unique_scout_key, scouter=scouter, alliance=alliance,
-                match_number=match_number, start_position=start_position, hab_level=hab_level, speed=speed,
-                strategy=strategy, team_work=team_work, recommend=recommend, notes=notes, in_match_actions=in_match_actions,
-                hatch_count=hatch_count, cargo_count=cargo_count
-            )
-
-            new_match_scout.save()
+                new_match_scout.save()
             return JsonResponse({'status': 'OK'})
 
         except Event.DoesNotExist:
@@ -172,16 +173,20 @@ def sync_coach_scouts(request, event_id):
             event = Event.objects.get(id=event_id, event_key=key)
             unique_scout_key = body.get('unique_scout_key')
             scouter = body.get('scouter')
-            robot_pk = body.get('robot_pk')
-            robot = Robot.objects.get(robot_pk=robot_pk)
+
+            robot_number = body.get('robot').get('robot_number')
+            robot = Robot.objects.get(robot_number=robot_number)
+
             match_number = body.get('match_number')
             synergy = body.get('synergy')
             notes = body.get('notes')
-            new_coach_scout = CoachScout.objects.create(
-                robot=robot, event=event, unique_scout_key=unique_scout_key, scouter=scouter, match_number=match_number,
-                synergy=synergy, notes=notes
-            )
-            new_coach_scout.save()
+
+            if CoachScout.objects.filter(unique_scout_key=unique_scout_key).count() < 1:
+                new_coach_scout = CoachScout.objects.create(
+                    robot=robot, event=event, unique_scout_key=unique_scout_key, scouter=scouter, match_number=match_number,
+                    synergy=synergy, notes=notes
+                )
+                new_coach_scout.save()
 
             return JsonResponse({'status': 'OK'})
 
