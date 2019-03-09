@@ -2,6 +2,7 @@ import random
 from django.db import models
 
 
+
 def random_words():
     adj = ('SCRATCHY', 'SPEEDY', 'ELECTRIC', 'POWERFUL', 'OVERPOWERED', 'GREEN', 'BLACK')
     noun = ('ROBOT', 'AI', 'PC', 'SERVER', 'CAT', 'TRAIN', 'CLOUD')
@@ -93,6 +94,7 @@ class MatchScout(models.Model):
     event_date = models.DateTimeField(auto_now=True)
     start_position = models.CharField(max_length=1, choices=START_POSITION_CHOICES, default='1')
     hab_level = models.CharField(max_length=1, choices=LEVEL_CHOICES, default='0')
+    hab_level_int = models.IntegerField(default=0)
     speed = models.IntegerField(default=0)
     strategy = models.IntegerField(default=0)
     team_work = models.IntegerField(default=0)

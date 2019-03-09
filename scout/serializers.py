@@ -10,6 +10,17 @@ class RobotSerializer(serializers.ModelSerializer):
         fields = ('robot_pk', 'robot_number', 'team_name', 'photo', 'location', 'favorite')
 
 
+class RobotAnalyzeSerializer(serializers.ModelSerializer):
+    avg = serializers.DecimalField(max_digits=5, decimal_places=2)
+    total = serializers.IntegerField()
+
+    class Meta:
+        model = Robot
+        fields = ('robot_pk', 'robot_number', 'team_name', 'avg', 'total')
+
+
+
+
 class PitScoutSerializer(serializers.ModelSerializer):
     robot = RobotSerializer(many=False)
 
@@ -44,3 +55,5 @@ class CoachScoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = CoachScout
         fields = ('id', 'robot', 'event', 'match_number', 'synergy', 'notes', 'scouter', 'unique_scout_key')
+
+

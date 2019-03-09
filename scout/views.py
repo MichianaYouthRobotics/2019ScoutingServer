@@ -5,9 +5,13 @@ from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from rest_framework.response import Response
+from django.db.models import Sum, Avg, Count
+from django.db.models.functions import Coalesce
+
 
 from .models import Robot, PitScout, MatchScout, Event, CoachScout
-from .serializers import RobotSerializer, PitScoutSerializer, MatchScoutSerializer, EventSerializer, CoachScoutSerializer
+from .serializers import RobotSerializer, PitScoutSerializer, MatchScoutSerializer, EventSerializer, \
+    CoachScoutSerializer, RobotAnalyzeSerializer
 
 
 class RobotList(generics.ListAPIView):
@@ -17,6 +21,22 @@ class RobotList(generics.ListAPIView):
         event = self.kwargs['event']
         robots = Event.objects.get(id=event).robots.all()
         return robots
+
+
+class TopHatchRobotList(generics.ListAPIView):
+    serializer_class = RobotAnalyzeSerializer
+
+    def get_queryset(self):
+        best_bots = Robot.objects.annotate(total=Coalesce(Sum('matchscout__hatch_count'), -1), avg=Coalesce(Avg('matchscout__hatch_count'), -1)).order_by('-total')
+        return best_bots
+
+
+class TopClimbRobotList(generics.ListAPIView):
+    serializer_class = RobotAnalyzeSerializer
+
+    def get_queryset(self):
+        best_bots = Robot.objects.annotate(total=Coalesce(Sum('matchscout__hab_level_int'), -1), avg=Coalesce(Avg('matchscout__hab_level_int'), -1)).order_by('-avg')
+        return best_bots
 
 
 class PitScouts(generics.ListAPIView):
@@ -59,6 +79,15 @@ def event_login(request, pk):
         except Event.DoesNotExist:
             return JsonResponse({'error': 'bad EVENT ID or KEY'})
     return JsonResponse({'error': 'POST requests only'})
+
+
+@csrf_exempt
+def fix_hab_levels(request):
+    all_match_scouts = MatchScout.objects.all()
+    for match_scout in all_match_scouts:
+        match_scout.hab_level_int = int(match_scout.hab_level)
+        match_scout.save()
+    return JsonResponse({'status': 'OK'})
 
 
 @csrf_exempt
