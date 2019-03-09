@@ -27,7 +27,15 @@ class TopHatchRobotList(generics.ListAPIView):
     serializer_class = RobotAnalyzeSerializer
 
     def get_queryset(self):
-        best_bots = Robot.objects.annotate(total=Coalesce(Sum('matchscout__hatch_count'), -1), avg=Coalesce(Avg('matchscout__hatch_count'), -1)).order_by('-total')
+        best_bots = Robot.objects.annotate(total=Coalesce(Sum('matchscout__hatch_count'), -1), avg=Coalesce(Avg('matchscout__hatch_count'), -1)).order_by('-avg')
+        return best_bots
+
+
+class TopCargoRobotList(generics.ListAPIView):
+    serializer_class = RobotAnalyzeSerializer
+
+    def get_queryset(self):
+        best_bots = Robot.objects.annotate(total=Coalesce(Sum('matchscout__cargo_count'), -1), avg=Coalesce(Avg('matchscout__cargo_count'), -1)).order_by('-avg')
         return best_bots
 
 

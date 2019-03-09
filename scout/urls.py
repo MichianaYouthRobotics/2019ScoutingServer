@@ -8,6 +8,7 @@ app_name = 'scout'
 urlpatterns = [
     path('all-robots/<int:event>/', views.RobotList.as_view()),
     path('best-robots/hatches/', views.TopHatchRobotList.as_view()),
+    path('best-robots/cargo/', views.TopCargoRobotList.as_view()),
     path('best-robots/climb/', views.TopClimbRobotList.as_view()),
     path('pit/list/<int:event>/', views.PitScouts.as_view()),
     path('pit/sync/<int:event_id>/', views.sync_pit_scouts),
