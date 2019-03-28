@@ -31,6 +31,9 @@ class Robot(models.Model):
     def robot_pk(self):
         return f'robot_{self.id}'
 
+    def __str__(self):
+        return f'{self.robot_number} - {self.team_name}'
+
     class Meta:
         ordering = ['robot_number']
 
