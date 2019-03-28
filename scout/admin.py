@@ -2,7 +2,14 @@ from django.contrib import admin
 
 from .models import Event, Robot, MatchScout, CoachScout, PitScout
 
-admin.site.register(Event)
+from django.forms import CheckboxSelectMultiple
+
+class EventAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.ManyToManyField: {'robots': CheckboxSelectMultiple},
+    }
+
+admin.site.register(Event, EventAdmin)
 admin.site.register(Robot)
 admin.site.register(MatchScout)
 admin.site.register(CoachScout)
