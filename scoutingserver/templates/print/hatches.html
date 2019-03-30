@@ -66,12 +66,12 @@
       {% for robot in best_bots %}
         <tr style="border-top: 1px solid green;">
         <th>{{ robot.total_hatches }}</th>
-        <th>{{ robot.avg_hatches }}</th>
+        <th>{{ robot.avg_hatches|floatformat }}</th>
         <th>{{ robot }}</th>
         <th>{{ robot.total_cargo }}</th>
-        <th>{{ robot.avg_cargo }}</th>
+        <th>{{ robot.avg_cargo|floatformat }}</th>
         <th>{{ robot.total_climb }}</th>
-        <th>{{ robot.avg_climb }}</th>
+        <th>{{ robot.avg_climb|floatformat }}</th>
         <th style="border-bottom: 1px solid black; width: 150px;">&nbsp</th>
         </tr>
       {% endfor %}
