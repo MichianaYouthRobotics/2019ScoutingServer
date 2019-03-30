@@ -1,12 +1,15 @@
 import json
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from rest_framework.response import Response
 from django.db.models import Sum, Avg, Count
 from django.db.models.functions import Coalesce
+from django.template.loader import get_template
+from weasyprint import HTML, CSS
+
 
 
 from .models import Robot, PitScout, MatchScout, Event, CoachScout
@@ -231,3 +234,55 @@ def sync_coach_scouts(request, event_id):
             return JsonResponse({'error': 'bad EVENT ID or KEY'})
 
     return JsonResponse({'error': 'POST requests only'})
+
+
+def print_hatches(request, event_id):
+    event = Event.objects.get(id=event_id)
+    best_bots = event.robots.all().annotate(total_hatches=Coalesce(Sum('matchscout__hatch_count'), -1),
+                                            avg_hatches=Coalesce(Avg('matchscout__hatch_count'), -1),
+                                            total_cargo=Coalesce(Sum('matchscout__cargo_count'), -1),
+                                            avg_cargo=Coalesce(Avg('matchscout__cargo_count'), -1),
+                                            total_climb=Coalesce(Sum('matchscout__hab_level_int'), -1),
+                                            avg_climb=Coalesce(Avg('matchscout__hab_level_int'), -1)
+                                            ).order_by('-avg_hatches')
+     # = Robot.objects.filter()
+    template = get_template('print/hatches.html')
+    html = template.render({'best_bots': best_bots})
+    pdf_file = HTML(string=html).write_pdf()
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename=hatchbots.pdf'
+    return response
+
+def print_cargo(request, event_id):
+    event = Event.objects.get(id=event_id)
+    best_bots = event.robots.all().annotate(total_hatches=Coalesce(Sum('matchscout__hatch_count'), -1),
+                                            avg_hatches=Coalesce(Avg('matchscout__hatch_count'), -1),
+                                            total_cargo=Coalesce(Sum('matchscout__cargo_count'), -1),
+                                            avg_cargo=Coalesce(Avg('matchscout__cargo_count'), -1),
+                                            total_climb=Coalesce(Sum('matchscout__hab_level_int'), -1),
+                                            avg_climb=Coalesce(Avg('matchscout__hab_level_int'), -1)
+                                            ).order_by('-avg_cargo')
+     # = Robot.objects.filter()
+    template = get_template('print/cargo.html')
+    html = template.render({'best_bots': best_bots})
+    pdf_file = HTML(string=html).write_pdf()
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename=cargobots.pdf'
+    return response
+
+def print_climb(request, event_id):
+    event = Event.objects.get(id=event_id)
+    best_bots = event.robots.all().annotate(total_hatches=Coalesce(Sum('matchscout__hatch_count'), -1),
+                                            avg_hatches=Coalesce(Avg('matchscout__hatch_count'), -1),
+                                            total_cargo=Coalesce(Sum('matchscout__cargo_count'), -1),
+                                            avg_cargo=Coalesce(Avg('matchscout__cargo_count'), -1),
+                                            total_climb=Coalesce(Sum('matchscout__hab_level_int'), -1),
+                                            avg_climb=Coalesce(Avg('matchscout__hab_level_int'), -1)
+                                            ).order_by('-avg_climb')
+     # = Robot.objects.filter()
+    template = get_template('print/climb.html')
+    html = template.render({'best_bots': best_bots})
+    pdf_file = HTML(string=html).write_pdf()
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename=climbbots.pdf'
+    return response

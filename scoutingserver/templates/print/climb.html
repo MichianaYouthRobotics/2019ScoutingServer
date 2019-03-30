@@ -1,0 +1,81 @@
+<html>
+<head>
+  <title>Best Climb Bots</title>
+  <style>
+
+    table {
+      width: 100%;
+    }
+
+    @page {
+      font-size: 8px;
+      size: a4 portrait;
+      margin: 10mm;
+
+      @bottom-left {
+        content: "Shephard";
+      }
+
+      @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+      }
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    body {
+      font-size: 12px;
+    }
+
+    .checkbox-list {
+      list-style: none;
+    }
+
+    .checkbox-list > li {
+      padding-top: 10px;
+    }
+
+    .checkbox-list > li:before {
+      content: "_____";
+      font-size: 1.25em;
+      font-weight: bold;
+      margin-left: -35px !important;
+      position: relative;
+      letter-spacing: -2px;
+      padding-right: 7px;
+    }
+  </style>
+</head>
+
+<body>
+<h2>Best Climb Bots</h2>
+<div>
+  <table>
+    <tr>
+      <th>Total Climb</th>
+      <th>Avg Climb</th>
+      <th>Robot</th>
+      <th>Total Hatches</th>
+      <th>Avg Hatches</th>
+      <th>Total Cargo</th>
+      <th>Avg Cargo</th>
+      <th>Notes</th>
+    </tr>
+    {% for robot in best_bots %}
+      <tr style="border-top: 1px solid green;">
+        <th>{{ robot.total_climb }}</th>
+        <th>{{ robot.avg_climb }}</th>
+        <th>{{ robot }}</th>
+        <th>{{ robot.total_hatches }}</th>
+        <th>{{ robot.avg_hatches }}</th>
+        <th>{{ robot.total_cargo }}</th>
+        <th>{{ robot.avg_cargo }}</th>
+        <th style="border-bottom: 1px solid black; width: 150px;">&nbsp</th>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+</body>
+</html>
